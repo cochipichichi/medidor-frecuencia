@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medidor de Frecuencia | Neotech</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f172a" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">🎛️ Frecuencia</div>
+    <nav class="controls">
+      <button id="btn-home">🏠</button>
+      <button id="btn-voz" title="Narrador futuro">🗣️</button>
+      <button id="btn-theme" title="Tema claro/oscuro">🌓</button>
+      <button id="btn-plus" title="Aumentar texto">A+</button>
+      <button id="btn-minus" title="Disminuir texto">A−</button>
+      <button id="btn-lang" title="Idioma">🌐</button>
+      <button id="btn-focus" title="Modo atención">🧠</button>
+      <button id="btn-search" title="Buscar">🔍</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1>📡 Medidor de frecuencia de sonido</h1>
+      <p>Presiona el botón y permite el micrófono. El sistema detectará la frecuencia dominante y la mostrará en el gráfico.</p>
+      <button id="btn-start" class="primary">🎙️ Iniciar medición</button>
+      <button id="btn-stop" class="secondary" disabled>⏹️ Detener</button>
+    </section>
+
+    <section class="freq-display">
+      <span>Frecuencia actual:</span>
+      <div id="freq-value">-- Hz</div>
+    </section>
+
+    <section class="graph-card">
+      <h2>📈 Espectro de frecuencias</h2>
+      <canvas id="freqCanvas" width="900" height="260"></canvas>
+    </section>
+
+    <section class="base-links">
+      <h3>📦 Vistas base (placeholder)</h3>
+      <div class="btn-grid">
+        <button>👁️ 3D</button>
+        <button>📱 AR</button>
+        <button>🥽 VR</button>
+        <button>✅ Registro CSV</button>
+        <button>🧪 Quiz</button>
+        <button>🎟️ Ticket</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Neotech EduLab · Medición de audio en navegador · v1</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(console.error);
+    }
+  </script>
+</body>
+</html>
