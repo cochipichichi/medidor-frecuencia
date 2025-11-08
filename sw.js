@@ -1,4 +1,4 @@
-const CACHE_NAME = "frecuencia-v2-1";
+const CACHE_NAME = "frecuencia-v3";
 const ASSETS = ["./", "./index.html", "./style.css", "./app.js", "./manifest.json"];
 
 self.addEventListener("install", (e) => {

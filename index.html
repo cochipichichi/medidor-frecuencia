@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medidor de Frecuencia v2.1 | Neotech</title>
+  <title>Medidor de Frecuencia v3 | Neotech</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0f172a" />
 </head>
-<body>
+<body class="theme-dark">
   <header class="topbar">
-    <div class="logo">🎛️ Frecuencia v2.1</div>
+    <div class="logo">🎛️ Frecuencia v3</div>
     <nav class="controls">
       <button id="btn-home" title="Inicio">🏠</button>
-      <button id="btn-voz" title="Narrador futuro">🗣️</button>
+      <button id="btn-voz" title="Leer frecuencia">🗣️</button>
       <button id="btn-theme" title="Tema claro/oscuro">🌓</button>
       <button id="btn-plus" title="Aumentar texto">A+</button>
       <button id="btn-minus" title="Disminuir texto">A−</button>
-      <button id="btn-lang" title="Idioma">🌐</button>
+      <button id="btn-lang" title="Cambiar idioma">🌐</button>
       <button id="btn-focus" title="Modo atención">🧠</button>
       <button id="btn-search" title="Buscar">🔍</button>
     </nav>
@@ -25,13 +25,38 @@
 
   <main class="container">
     <section class="panel">
-      <h1>📡 Medidor de frecuencia de sonido</h1>
-      <p>Versión con columna extra en CSV para guardar también la frecuencia máxima/congelada.</p>
+      <h1 data-i18n="title">📡 Medidor de frecuencia de sonido</h1>
+      <p data-i18n="subtitle">Versión con laboratorio, historial, sensibilidad y CSV.</p>
       <div class="btn-row">
-        <button id="btn-start" class="primary">🎙️ Iniciar medición</button>
-        <button id="btn-stop" class="secondary" disabled>⏹️ Detener</button>
+        <button id="btn-start" class="primary" data-i18n="start">🎙️ Iniciar medición</button>
+        <button id="btn-stop" class="secondary" disabled data-i18n="stop">⏹️ Detener</button>
         <button id="btn-freeze" class="secondary" disabled>🧊 Congelar máx.</button>
         <button id="btn-export" class="csv" disabled>📤 Exportar CSV</button>
+        <button id="btn-mode" class="secondary">👨‍🏫 Modo docente</button>
+      </div>
+    </section>
+
+    <section class="lab-wrapper" id="lab-panel">
+      <div class="lab-card">
+        <h3>🧪 Datos en vivo</h3>
+        <p><strong>Frecuencia actual:</strong> <span id="live-freq">-- Hz</span></p>
+        <p><strong>Frecuencia máx.:</strong> <span id="live-max">-- Hz</span></p>
+        <p><strong>Muestras:</strong> <span id="live-samples">0</span></p>
+      </div>
+      <div class="lab-card">
+        <h3>🎯 Frecuencia objetivo</h3>
+        <label for="targetFreq">Hz</label>
+        <input type="number" id="targetFreq" min="10" max="5000" value="440" />
+        <button id="btn-set-target" class="mini">Marcar</button>
+        <p class="hint">Se dibuja línea en el gráfico.</p>
+      </div>
+      <div class="lab-card">
+        <h3>🎚️ Sensibilidad</h3>
+        <div class="sens-row">
+          <button class="sens-btn" data-level="soft">🟣 Suave</button>
+          <button class="sens-btn active" data-level="normal">🔵 Normal</button>
+          <button class="sens-btn" data-level="fast">🔴 Rápido</button>
+        </div>
       </div>
     </section>
 
@@ -51,6 +76,22 @@
       <canvas id="freqCanvas" width="900" height="260"></canvas>
     </section>
 
+    <section class="history-card" id="history-card">
+      <h2>🕒 Historial reciente</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ms</th>
+            <th>Hz</th>
+            <th>Hz máx.</th>
+          </tr>
+        </thead>
+        <tbody id="history-body">
+        </tbody>
+      </table>
+    </section>
+
     <section class="base-links">
       <h3>📦 Vistas base</h3>
       <div class="btn-grid">
@@ -64,8 +105,16 @@
     </section>
   </main>
 
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Buscar en la página..." />
+      <button id="search-close">Cerrar</button>
+      <p class="search-hint">Este buscador es solo visual. (placeholder)</p>
+    </div>
+  </div>
+
   <footer class="footer">
-    <p>Neotech EduLab · Medición de audio en navegador · v2.1</p>
+    <p>Neotech EduLab · Medición de audio en navegador · v3</p>
   </footer>
 
   <script src="app.js"></script>
