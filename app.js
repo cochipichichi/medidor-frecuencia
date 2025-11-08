@@ -16,7 +16,7 @@ const btnExport = document.getElementById("btn-export");
 const FFT_SIZE = 2048;
 let frozen = false;
 let maxFreq = 0;
-let samples = []; // {time, freq}
+let samples = []; // {time, freq, frozenMax}
 
 btnStart.addEventListener("click", async () => {
   if (running) return;
@@ -66,8 +66,8 @@ btnExport.addEventListener("click", () => {
     alert("No hay datos para exportar.");
     return;
   }
-  const csvContent = ["timestamp_ms,frecuencia_hz"].concat(
-    samples.map(s => `${s.time},${s.freq.toFixed(2)}`)
+  const csvContent = ["timestamp_ms,frecuencia_hz,frecuencia_max_congelada_hz"].concat(
+    samples.map(s => `${s.time},${s.freq.toFixed(2)},${s.frozenMax.toFixed(2)}`)
   ).join("\n");
 
   const blob = new Blob([csvContent], { type: "text/csv" });
@@ -118,16 +118,17 @@ function draw() {
 
   if (!isNaN(freq) && freq > 0) {
     freqValueEl.textContent = freq.toFixed(1) + " Hz";
-    samples.push({ time: performance.now().toFixed(0), freq: freq });
-  }
-
-  // máximo
-  if (!frozen && !isNaN(freq) && freq > maxFreq) {
-    maxFreq = freq;
-    freqMaxEl.textContent = maxFreq.toFixed(1) + " Hz";
-  } else if (frozen) {
-    // mantener valor congelado
+    // si no está congelado, actualizamos el máximo
+    if (!frozen && freq > maxFreq) {
+      maxFreq = freq;
+    }
     freqMaxEl.textContent = maxFreq > 0 ? maxFreq.toFixed(1) + " Hz" : "-- Hz";
+
+    samples.push({
+      time: performance.now().toFixed(0),
+      freq: freq,
+      frozenMax: maxFreq || 0
+    });
   }
 }
 
