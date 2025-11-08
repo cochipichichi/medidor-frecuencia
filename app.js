@@ -7,10 +7,16 @@ let running = false;
 const canvas = document.getElementById("freqCanvas");
 const ctx = canvas.getContext("2d");
 const freqValueEl = document.getElementById("freq-value");
+const freqMaxEl = document.getElementById("freq-max");
 const btnStart = document.getElementById("btn-start");
 const btnStop = document.getElementById("btn-stop");
+const btnFreeze = document.getElementById("btn-freeze");
+const btnExport = document.getElementById("btn-export");
 
 const FFT_SIZE = 2048;
+let frozen = false;
+let maxFreq = 0;
+let samples = []; // {time, freq}
 
 btnStart.addEventListener("click", async () => {
   if (running) return;
@@ -30,6 +36,8 @@ btnStart.addEventListener("click", async () => {
     running = true;
     btnStart.disabled = true;
     btnStop.disabled = false;
+    btnFreeze.disabled = false;
+    btnExport.disabled = false;
 
     draw();
   } catch (err) {
@@ -43,8 +51,36 @@ btnStop.addEventListener("click", () => {
   running = false;
   btnStart.disabled = false;
   btnStop.disabled = true;
+  btnFreeze.disabled = true;
   freqValueEl.textContent = "-- Hz";
   clearCanvas();
+});
+
+btnFreeze.addEventListener("click", () => {
+  frozen = !frozen;
+  btnFreeze.textContent = frozen ? "🧊 Descongelar" : "🧊 Congelar máx.";
+});
+
+btnExport.addEventListener("click", () => {
+  if (samples.length === 0) {
+    alert("No hay datos para exportar.");
+    return;
+  }
+  const csvContent = ["timestamp_ms,frecuencia_hz"].concat(
+    samples.map(s => `${s.time},${s.freq.toFixed(2)}`)
+  ).join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const now = new Date();
+  const filename = `frecuencias_${now.toISOString().replace(/[:.]/g, "-")}.csv`;
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 });
 
 function draw() {
@@ -82,6 +118,16 @@ function draw() {
 
   if (!isNaN(freq) && freq > 0) {
     freqValueEl.textContent = freq.toFixed(1) + " Hz";
+    samples.push({ time: performance.now().toFixed(0), freq: freq });
+  }
+
+  // máximo
+  if (!frozen && !isNaN(freq) && freq > maxFreq) {
+    maxFreq = freq;
+    freqMaxEl.textContent = maxFreq.toFixed(1) + " Hz";
+  } else if (frozen) {
+    // mantener valor congelado
+    freqMaxEl.textContent = maxFreq > 0 ? maxFreq.toFixed(1) + " Hz" : "-- Hz";
   }
 }
 

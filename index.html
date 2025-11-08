@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medidor de Frecuencia | Neotech</title>
+  <title>Medidor de Frecuencia v2 | Neotech</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#0f172a" />
 </head>
 <body>
   <header class="topbar">
-    <div class="logo">🎛️ Frecuencia</div>
+    <div class="logo">🎛️ Frecuencia v2</div>
     <nav class="controls">
-      <button id="btn-home">🏠</button>
+      <button id="btn-home" title="Inicio">🏠</button>
       <button id="btn-voz" title="Narrador futuro">🗣️</button>
       <button id="btn-theme" title="Tema claro/oscuro">🌓</button>
       <button id="btn-plus" title="Aumentar texto">A+</button>
@@ -26,14 +26,24 @@
   <main class="container">
     <section class="panel">
       <h1>📡 Medidor de frecuencia de sonido</h1>
-      <p>Presiona el botón y permite el micrófono. El sistema detectará la frecuencia dominante y la mostrará en el gráfico.</p>
-      <button id="btn-start" class="primary">🎙️ Iniciar medición</button>
-      <button id="btn-stop" class="secondary" disabled>⏹️ Detener</button>
+      <p>Permite el micrófono. Ahora puedes <strong>congelar la frecuencia máxima</strong> y <strong>exportar los datos a CSV</strong>.</p>
+      <div class="btn-row">
+        <button id="btn-start" class="primary">🎙️ Iniciar medición</button>
+        <button id="btn-stop" class="secondary" disabled>⏹️ Detener</button>
+        <button id="btn-freeze" class="secondary" disabled>🧊 Congelar máx.</button>
+        <button id="btn-export" class="csv" disabled>📤 Exportar CSV</button>
+      </div>
     </section>
 
-    <section class="freq-display">
-      <span>Frecuencia actual:</span>
-      <div id="freq-value">-- Hz</div>
+    <section class="freq-wrapper">
+      <div class="freq-display current">
+        <span>Frecuencia actual:</span>
+        <div id="freq-value">-- Hz</div>
+      </div>
+      <div class="freq-display max">
+        <span>Frecuencia máxima (congelada):</span>
+        <div id="freq-max">-- Hz</div>
+      </div>
     </section>
 
     <section class="graph-card">
@@ -42,7 +52,7 @@
     </section>
 
     <section class="base-links">
-      <h3>📦 Vistas base (placeholder)</h3>
+      <h3>📦 Vistas base</h3>
       <div class="btn-grid">
         <button>👁️ 3D</button>
         <button>📱 AR</button>
@@ -55,7 +65,7 @@
   </main>
 
   <footer class="footer">
-    <p>Neotech EduLab · Medición de audio en navegador · v1</p>
+    <p>Neotech EduLab · Medición de audio en navegador · v2</p>
   </footer>
 
   <script src="app.js"></script>

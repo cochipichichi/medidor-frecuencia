@@ -1,6 +1,6 @@
 {
-  "name": "Medidor de Frecuencia",
-  "short_name": "Frecuencia",
+  "name": "Medidor de Frecuencia v2",
+  "short_name": "Frecuencia v2",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
